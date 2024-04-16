@@ -1,10 +1,10 @@
 # Imports
-import seaborn as sns
+import palmerpenguins 
+import plotly.express as px
 from faicons import icon_svg
-
 from shiny import reactive
 from shiny.express import input, render, ui
-import palmerpenguins 
+from shinywidgets import render_widget 
 
 # Load penguins data into a pandas data frame
 df = palmerpenguins.load_penguins()
@@ -83,7 +83,7 @@ with ui.layout_column_wrap(fill=False):
         def count():
             return filtered_df().shape[0]
 
-    #-> Bill L=length
+    #-> Bill length
     with ui.value_box(showcase=icon_svg("ruler-horizontal")):
         "Average Bill Length"
 
@@ -108,15 +108,13 @@ with ui.layout_columns():
         # Add a header to the card
         ui.card_header("Bill length and depth")
 
-        # Funcdtion to create the scatterplot
-        @render.plot
+        # Function to create the scatterplot
+        @render_widget
         def length_depth():
-            return sns.scatterplot(
-                data=filtered_df(),
-                x="bill_length_mm",
-                y="bill_depth_mm",
-                hue="species",
-            )
+            return px.scatter(df,
+                              x='bill_length_mm',
+                              y='bill_depth_mm',
+                              color='species')
 
     # Create a card for the summary
     with ui.card(full_screen=True):
