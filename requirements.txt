@@ -1,6 +1,6 @@
 faicons
 shiny
 shinylive
-seaborn
 pandas
 palmerpenguins
+plotly
